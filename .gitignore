@@ -1,17 +1,62 @@
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
-.mvn/wrapper/maven-wrapper.jar
+# ---------------------
+# IntelliJ IDEA
+# ---------------------
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+# IntelliJ's workspace-specific settings
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/dictionaries
 
-# Eclipse m2e generated files
-# Eclipse Core
+# ---------------------
+# Maven
+# ---------------------
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# ---------------------
+# Logs
+# ---------------------
+*.log
+logs/
+*.pid
+
+# ---------------------
+# OS / Editor specific
+# ---------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ---------------------
+# Environment
+# ---------------------
+.env
+*.env
+.env.*
+
+# ---------------------
+# Java
+# ---------------------
+*.class
+
+# ---------------------
+# Eclipse (if mixed usage)
+# ---------------------
 .project
-# JDT-specific (Eclipse Java Development Tools)
 .classpath
+.settings/
+
+# ---------------------
+# Other IDEs
+# ---------------------
+.vscode/
+
+# ---------------------
+# Build tools
+# ---------------------
+build/
