@@ -1,6 +1,5 @@
 package com.bunshock.accounts.dto.account;
 
-import com.bunshock.accounts.enums.AccountType;
 import com.bunshock.accounts.validation.ValidAccountType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +12,9 @@ import lombok.Setter;
 @Builder
 public class AccountUpdateDTO {
 
+    // Keep accountType as String to allow for custom validation
     @ValidAccountType
-    private AccountType accountType;
+    private String accountType;
 
     // TODO: Add validation
     private String branchAddress;

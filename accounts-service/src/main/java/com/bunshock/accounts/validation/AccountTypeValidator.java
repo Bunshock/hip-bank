@@ -8,7 +8,7 @@ public class AccountTypeValidator implements ConstraintValidator<ValidAccountTyp
 
     @Override
     public boolean isValid(String accountType, ConstraintValidatorContext context) {
-        if (accountType == null) return false;
+        if (accountType == null) return true;
         try {
             AccountType.valueOf(accountType);
             return true;

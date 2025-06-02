@@ -136,7 +136,7 @@ public class AccountService implements IAccountService {
                         "Account", "customerId", customer.getCustomerId().toString()));
 
         if (updatedAccount.getAccountType() != null)
-            account.setAccountType(updatedAccount.getAccountType());
+            account.setAccountType(AccountType.valueOf(updatedAccount.getAccountType()));
         if (updatedAccount.getBranchAddress() != null)
             account.setBranchAddress(updatedAccount.getBranchAddress());
 

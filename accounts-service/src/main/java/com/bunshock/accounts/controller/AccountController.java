@@ -10,6 +10,7 @@ import com.bunshock.accounts.dto.ResponseSuccessDTO;
 import com.bunshock.accounts.service.IAccountService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -59,6 +60,8 @@ public class AccountController {
 
     @GetMapping("/fetch/{mobileNumber}")
     public ResponseEntity<ResponseDTO> fetchAccountDetails(
+            @Pattern(regexp = "^\\+?\\d{1,4}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]" +
+                    "?\\d{1,4}[-.\\s]?\\d{1,9}$", message = "Invalid mobile number format")
             @PathVariable String mobileNumber
     ) {
         return new ResponseEntity<>(ResponseSuccessDTO.<CustomerAccountDetailsDTO>builder()
@@ -72,8 +75,10 @@ public class AccountController {
 
     @PutMapping("/update/{mobileNumber}")
     public ResponseEntity<ResponseDTO> updateCustomerAccount(
+            @Pattern(regexp = "^\\+?\\d{1,4}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]" +
+                    "?\\d{1,4}[-.\\s]?\\d{1,9}$", message = "Invalid mobile number format")
             @PathVariable String mobileNumber,
-            @RequestBody AccountUpdateDTO updatedAccount
+            @Valid @RequestBody AccountUpdateDTO updatedAccount
     ) {
         return new ResponseEntity<>(ResponseSuccessDTO.<AccountShowDTO>builder()
                 .statusCode(HttpStatus.OK.value())
@@ -87,6 +92,8 @@ public class AccountController {
     @DeleteMapping("/delete/{mobileNumber}")
     @Transactional
     public ResponseEntity<ResponseDTO> deleteCustomerAccount(
+            @Pattern(regexp = "^\\+?\\d{1,4}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]" +
+                    "?\\d{1,4}[-.\\s]?\\d{1,9}$", message = "Invalid mobile number format")
             @PathVariable String mobileNumber
     ) {
         accountService.deleteAccount(mobileNumber);
