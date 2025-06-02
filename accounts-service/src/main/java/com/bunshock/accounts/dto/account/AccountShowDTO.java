@@ -1,5 +1,6 @@
 package com.bunshock.accounts.dto.account;
 
+import com.bunshock.accounts.enums.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.Setter;
 public class AccountShowDTO {
 
     private String accountNumber;
-    private String accountType;
+    private AccountType accountType;
     private String branchAddress;
 
 }

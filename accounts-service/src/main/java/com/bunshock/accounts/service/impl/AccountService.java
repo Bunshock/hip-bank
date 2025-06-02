@@ -7,6 +7,7 @@ import com.bunshock.accounts.dto.customer.CustomerAccountDetailsDTO;
 import com.bunshock.accounts.dto.customer.CustomerInputDTO;
 import com.bunshock.accounts.entity.Account;
 import com.bunshock.accounts.entity.Customer;
+import com.bunshock.accounts.enums.AccountType;
 import com.bunshock.accounts.exception.CustomerAlreadyExistsException;
 import com.bunshock.accounts.exception.IdGenerationException;
 import com.bunshock.accounts.exception.ResourceNotFoundException;
@@ -78,9 +79,11 @@ public class AccountService implements IAccountService {
         newAccount.setAccountNumber(accountNumber);
 
         newAccount.setCustomerId(savedCustomer.getCustomerId());
-        newAccount.setAccountType(AccountConstants.SAVINGS);
+        // TODO: let user choose account type
+        newAccount.setAccountType(AccountType.SAVINGS);
         newAccount.setBranchAddress(AccountConstants.ADDRESS);
 
+        // TODO: properly set createdBy using Spring Security context
         newAccount.setCreatedAt(LocalDateTime.now());
         newAccount.setCreatedBy("Anonymous");
         accountRepository.save(newAccount);
