@@ -45,4 +45,11 @@ public class GlobalExceptionHandler {
         return singleErrorResponse(HttpStatus.NOT_FOUND, e.getMessage(), request);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseErrorDTO> handleException(
+            Exception e, WebRequest request
+    ) {
+        return singleErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), request);
+    }
+
 }
