@@ -1,11 +1,13 @@
 package com.bunshock.accounts.service.impl;
 
 import com.bunshock.accounts.constants.AccountConstants;
+import com.bunshock.accounts.dto.customer.CustomerAccountDetailsDTO;
 import com.bunshock.accounts.dto.customer.CustomerInputDTO;
 import com.bunshock.accounts.entity.Account;
 import com.bunshock.accounts.entity.Customer;
 import com.bunshock.accounts.exception.CustomerAlreadyExistsException;
 import com.bunshock.accounts.exception.IdGenerationException;
+import com.bunshock.accounts.exception.ResourceNotFoundException;
 import com.bunshock.accounts.mapper.CustomerMapper;
 import com.bunshock.accounts.repository.IAccountRepository;
 import com.bunshock.accounts.repository.ICustomerRepository;
@@ -77,4 +79,18 @@ public class AccountService implements IAccountService {
         newAccount.setCreatedBy("Anonymous");
         accountRepository.save(newAccount);
     }
+
+    @Override
+    public CustomerAccountDetailsDTO fetchAccountDetails(String mobileNumber) {
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Customer", "mobileNumber", mobileNumber));
+
+        Account account = accountRepository.findByCustomerId(customer.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Account", "customerId", customer.getCustomerId().toString()));
+
+        return CustomerMapper.mapToCustomerAccountDetailsDTO(customer, account);
+    }
+
 }

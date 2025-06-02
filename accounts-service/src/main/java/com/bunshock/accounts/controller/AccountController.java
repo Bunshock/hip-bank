@@ -1,6 +1,7 @@
 package com.bunshock.accounts.controller;
 
 import com.bunshock.accounts.constants.AccountConstants;
+import com.bunshock.accounts.dto.customer.CustomerAccountDetailsDTO;
 import com.bunshock.accounts.dto.customer.CustomerInputDTO;
 import com.bunshock.accounts.dto.ResponseDTO;
 import com.bunshock.accounts.dto.ResponseSuccessDTO;
@@ -9,9 +10,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -35,6 +38,19 @@ public class AccountController {
                 .message(String.format(AccountConstants.MESSAGE_201, "Account"))
                 .data(null)
                 .build(), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/fetch")
+    public ResponseEntity<ResponseDTO> fetchAccountDetails(
+            @RequestParam String mobileNumber
+    ) {
+        return new ResponseEntity<>(ResponseSuccessDTO.<CustomerAccountDetailsDTO>builder()
+                .statusCode(HttpStatus.OK.value())
+                .timestamp(LocalDateTime.now())
+                .message(String.format(AccountConstants.MESSAGE_200, "Fetched account details " +
+                        "for customer with mobile number: " + mobileNumber))
+                .data(accountService.fetchAccountDetails(mobileNumber))
+                .build(), HttpStatus.OK);
     }
 
 }
