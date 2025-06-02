@@ -15,10 +15,4 @@ public class ResponseErrorDTO extends ResponseDTO {
 
     private List<String> errors;
 
-    public ResponseErrorDTO(String apiPath, List<String> errors, ResponseDTOBuilder<?, ?> b) {
-        super(b);
-        this.apiPath = apiPath;
-        this.errors = errors;
-    }
-
 }

@@ -10,27 +10,18 @@ import com.bunshock.accounts.mapper.CustomerMapper;
 import com.bunshock.accounts.repository.IAccountRepository;
 import com.bunshock.accounts.repository.ICustomerRepository;
 import com.bunshock.accounts.service.IAccountService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
 @Service
+@AllArgsConstructor
 public class AccountService implements IAccountService {
 
     private final IAccountRepository accountRepository;
     private final ICustomerRepository customerRepository;
     private final AccountNumberGeneratorService accountNumberGenerator;
-
-    private static final SecureRandom random = new SecureRandom();
-
-    public AccountService(IAccountRepository accountRepository,
-                          ICustomerRepository customerRepository,
-                          AccountNumberGeneratorService accountNumberGenerator) {
-        this.accountRepository = accountRepository;
-        this.customerRepository = customerRepository;
-        this.accountNumberGenerator = accountNumberGenerator;
-    }
 
     /**
      * Generates a unique account number by attempting a number of times to produce

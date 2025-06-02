@@ -12,10 +12,4 @@ public class ResponseSuccessDTO<T> extends ResponseDTO {
 
     private T data;
 
-    public ResponseSuccessDTO(String message, T data, ResponseDTOBuilder<?, ?> b) {
-        super(b);
-        this.message = message;
-        this.data = data;
-    }
-
 }

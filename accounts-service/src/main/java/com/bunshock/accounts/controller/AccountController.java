@@ -5,6 +5,7 @@ import com.bunshock.accounts.dto.customer.CustomerInputDTO;
 import com.bunshock.accounts.dto.ResponseDTO;
 import com.bunshock.accounts.dto.ResponseSuccessDTO;
 import com.bunshock.accounts.service.IAccountService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,10 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping(path = "/api/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class AccountController {
 
     private final IAccountService accountService;
-
-    public AccountController(IAccountService accountService) {
-        this.accountService = accountService;
-    }
 
     // TODO: Add input validation
     @PostMapping("/create")
