@@ -13,28 +13,36 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private ResponseEntity<ResponseErrorDTO> singleErrorResponse(
+            HttpStatus httpStatus, String error, WebRequest request
+    ) {
+        return new ResponseEntity<>(ResponseErrorDTO.builder()
+                .statusCode(httpStatus.value())
+                .timestamp(LocalDateTime.now())
+                .apiPath(request.getDescription(false))
+                .errors(List.of(error))
+                .build(), httpStatus);
+    }
+
     @ExceptionHandler(CustomerAlreadyExistsException.class)
     public ResponseEntity<ResponseErrorDTO> handleCustomerAlreadyExistsException(
             CustomerAlreadyExistsException e, WebRequest request
     ) {
-        return new ResponseEntity<>(ResponseErrorDTO.builder()
-                .statusCode(HttpStatus.CONFLICT.value())
-                .timestamp(LocalDateTime.now())
-                .apiPath(request.getDescription(false))
-                .errors(List.of(e.getMessage()))
-                .build(), HttpStatus.CONFLICT);
+        return singleErrorResponse(HttpStatus.CONFLICT, e.getMessage(), request);
     }
 
     @ExceptionHandler(IdGenerationException.class)
     public ResponseEntity<ResponseErrorDTO> handleIdGenerationException(
-            CustomerAlreadyExistsException e, WebRequest request
+            IdGenerationException e, WebRequest request
     ) {
-        return new ResponseEntity<>(ResponseErrorDTO.builder()
-                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .timestamp(LocalDateTime.now())
-                .apiPath(request.getDescription(false))
-                .errors(List.of(e.getMessage()))
-                .build(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return singleErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), request);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ResponseErrorDTO> handleResourceNotFoundException(
+            ResourceNotFoundException e, WebRequest request
+    ) {
+        return singleErrorResponse(HttpStatus.NOT_FOUND, e.getMessage(), request);
     }
 
 }
