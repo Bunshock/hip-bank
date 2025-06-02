@@ -1,5 +1,6 @@
 package com.bunshock.accounts.dto.customer;
 
+import com.bunshock.accounts.dto.account.AccountShowDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,8 +15,7 @@ public class CustomerAccountDetailsDTO {
     private String name;
     private String email;
     private String mobileNumber;
-    private String accountNumber;
-    private String accountType;
-    private String branchAddress;
+
+    private AccountShowDTO account;
 
 }

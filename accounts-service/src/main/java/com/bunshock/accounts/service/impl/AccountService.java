@@ -8,6 +8,7 @@ import com.bunshock.accounts.entity.Customer;
 import com.bunshock.accounts.exception.CustomerAlreadyExistsException;
 import com.bunshock.accounts.exception.IdGenerationException;
 import com.bunshock.accounts.exception.ResourceNotFoundException;
+import com.bunshock.accounts.mapper.AccountMapper;
 import com.bunshock.accounts.mapper.CustomerMapper;
 import com.bunshock.accounts.repository.IAccountRepository;
 import com.bunshock.accounts.repository.ICustomerRepository;
@@ -90,7 +91,12 @@ public class AccountService implements IAccountService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Account", "customerId", customer.getCustomerId().toString()));
 
-        return CustomerMapper.mapToCustomerAccountDetailsDTO(customer, account);
+        return CustomerAccountDetailsDTO.builder()
+                .name(customer.getName())
+                .email(customer.getEmail())
+                .mobileNumber(customer.getMobileNumber())
+                .account(AccountMapper.mapToAccountShowDTO(account))
+                .build();
     }
 
 }
