@@ -1,7 +1,11 @@
 package com.bunshock.accounts.service;
 
+import com.bunshock.accounts.dto.account.AccountShowDTO;
+import com.bunshock.accounts.dto.account.AccountUpdateDTO;
 import com.bunshock.accounts.dto.customer.CustomerAccountDetailsDTO;
 import com.bunshock.accounts.dto.customer.CustomerInputDTO;
+
+import java.util.List;
 
 public interface IAccountService {
 
@@ -13,10 +17,34 @@ public interface IAccountService {
     void createAccount(CustomerInputDTO customerInput);
 
     /**
-     * Fetches the account details for the given Customer's mobile number
+     * Fetches the details for all customer accounts.
+     *
+     * @return a list of customer account details
+     */
+    List<CustomerAccountDetailsDTO> fetchAllAccountDetails();
+
+    /**
+     * Fetches the account details for a customer with a given mobile number
      *
      * @param mobileNumber the mobile number of the customer
      * @return the account details
      */
     CustomerAccountDetailsDTO fetchAccountDetails(String mobileNumber);
+
+    /**
+     * Updates the account details for a customer with a given mobile number
+     *
+     * @param mobileNumber the mobile number of the customer
+     * @param updatedAccount the updated account details
+     * @return the updated account details
+     */
+    AccountShowDTO updateAccount(String mobileNumber, AccountUpdateDTO updatedAccount);
+
+    /**
+     * Deletes the account for the given customer with the given mobile number.
+     * This operation also deletes the customer entity from the customer table.
+     *
+     * @param mobileNumber the mobile number of the customer
+     */
+    void deleteAccount(String mobileNumber);
 }

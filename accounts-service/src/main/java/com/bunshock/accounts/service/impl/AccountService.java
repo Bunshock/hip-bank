@@ -1,6 +1,8 @@
 package com.bunshock.accounts.service.impl;
 
 import com.bunshock.accounts.constants.AccountConstants;
+import com.bunshock.accounts.dto.account.AccountShowDTO;
+import com.bunshock.accounts.dto.account.AccountUpdateDTO;
 import com.bunshock.accounts.dto.customer.CustomerAccountDetailsDTO;
 import com.bunshock.accounts.dto.customer.CustomerInputDTO;
 import com.bunshock.accounts.entity.Account;
@@ -13,10 +15,12 @@ import com.bunshock.accounts.mapper.CustomerMapper;
 import com.bunshock.accounts.repository.IAccountRepository;
 import com.bunshock.accounts.repository.ICustomerRepository;
 import com.bunshock.accounts.service.IAccountService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -47,6 +51,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    @Transactional
     public void createAccount(CustomerInputDTO customerInput) {
         // Create new customer using input data
         Customer customer = CustomerMapper.mapToCustomer(customerInput);
@@ -82,6 +87,24 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    public List<CustomerAccountDetailsDTO> fetchAllAccountDetails() {
+        List<Account> accounts = accountRepository.findAll();
+        return accounts.stream()
+                .map(account -> {
+                    Customer customer = customerRepository.findById(account.getCustomerId())
+                            .orElseThrow(() -> new ResourceNotFoundException(
+                                    "Customer", "customerId", account.getCustomerId().toString()));
+                    return CustomerAccountDetailsDTO.builder()
+                            .name(customer.getName())
+                            .email(customer.getEmail())
+                            .mobileNumber(customer.getMobileNumber())
+                            .account(AccountMapper.mapToAccountShowDTO(account))
+                            .build();
+                })
+                .toList();
+    }
+
+    @Override
     public CustomerAccountDetailsDTO fetchAccountDetails(String mobileNumber) {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -97,6 +120,38 @@ public class AccountService implements IAccountService {
                 .mobileNumber(customer.getMobileNumber())
                 .account(AccountMapper.mapToAccountShowDTO(account))
                 .build();
+    }
+
+    @Override
+    public AccountShowDTO updateAccount(String mobileNumber, AccountUpdateDTO updatedAccount) {
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Customer", "mobileNumber", mobileNumber));
+
+        Account account = accountRepository.findByCustomerId(customer.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Account", "customerId", customer.getCustomerId().toString()));
+
+        if (updatedAccount.getAccountType() != null)
+            account.setAccountType(updatedAccount.getAccountType());
+        if (updatedAccount.getBranchAddress() != null)
+            account.setBranchAddress(updatedAccount.getBranchAddress());
+
+        return AccountMapper.mapToAccountShowDTO(accountRepository.save(account));
+    }
+
+    @Override
+    public void deleteAccount(String mobileNumber) {
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Customer", "mobileNumber", mobileNumber));
+
+        accountRepository.findByCustomerId(customer.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Account", "customerId", customer.getCustomerId().toString()));
+
+        accountRepository.deleteByCustomerId(customer.getCustomerId());
+        customerRepository.deleteById(customer.getCustomerId());
     }
 
 }
