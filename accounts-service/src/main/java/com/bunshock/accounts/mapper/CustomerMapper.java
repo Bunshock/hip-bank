@@ -1,18 +1,30 @@
 package com.bunshock.accounts.mapper;
 
+import com.bunshock.accounts.dto.customer.CustomerAccountDetailsDTO;
 import com.bunshock.accounts.dto.customer.CustomerInputDTO;
+import com.bunshock.accounts.entity.Account;
 import com.bunshock.accounts.entity.Customer;
 
 public class CustomerMapper {
 
     public static Customer mapToCustomer(CustomerInputDTO customerInput) {
-        Customer customer = new Customer();
+        return Customer.builder()
+                .name(customerInput.getName())
+                .email(customerInput.getEmail())
+                .mobileNumber(customerInput.getMobileNumber())
+                .build();
+    }
 
-        customer.setName(customerInput.getName());
-        customer.setEmail(customerInput.getEmail());
-        customer.setMobileNumber(customerInput.getMobileNumber());
-
-        return customer;
+    public static CustomerAccountDetailsDTO mapToCustomerAccountDetailsDTO(
+            Customer customer, Account account) {
+        return CustomerAccountDetailsDTO.builder()
+                .name(customer.getName())
+                .email(customer.getEmail())
+                .mobileNumber(customer.getMobileNumber())
+                .accountNumber(account.getAccountNumber())
+                .accountType(account.getAccountType())
+                .branchAddress(account.getBranchAddress())
+                .build();
     }
 
 }
