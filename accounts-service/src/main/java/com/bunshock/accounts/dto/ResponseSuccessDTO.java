@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 public class ResponseSuccessDTO<T> extends ResponseDTO {
 
     private String message;
+
     private T data;
 
     public ResponseSuccessDTO(String message, T data, ResponseDTOBuilder<?, ?> b) {

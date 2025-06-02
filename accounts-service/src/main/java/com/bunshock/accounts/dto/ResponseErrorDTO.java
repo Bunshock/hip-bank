@@ -10,7 +10,9 @@ import java.util.List;
 @SuperBuilder
 public class ResponseErrorDTO extends ResponseDTO {
 
+    // Request URI
     private String apiPath;
+
     private List<String> errors;
 
     public ResponseErrorDTO(String apiPath, List<String> errors, ResponseDTOBuilder<?, ?> b) {
