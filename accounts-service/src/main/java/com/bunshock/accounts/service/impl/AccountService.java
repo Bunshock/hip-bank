@@ -67,9 +67,6 @@ public class AccountService implements IAccountService {
                             " number '" + customer.getMobileNumber() + "' already exists");
                 } );
 
-        // TODO: properly set createdBy using Spring Security context
-        customer.setCreatedAt(LocalDateTime.now());
-        customer.setCreatedBy("Anonymous");
         Customer savedCustomer = customerRepository.save(customer);
 
         // Create new account associated with newly saved customer
@@ -83,9 +80,6 @@ public class AccountService implements IAccountService {
         newAccount.setAccountType(AccountType.SAVINGS);
         newAccount.setBranchAddress(AccountConstants.ADDRESS);
 
-        // TODO: properly set createdBy using Spring Security context
-        newAccount.setCreatedAt(LocalDateTime.now());
-        newAccount.setCreatedBy("Anonymous");
         accountRepository.save(newAccount);
     }
 
