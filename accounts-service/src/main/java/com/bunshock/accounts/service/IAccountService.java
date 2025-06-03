@@ -1,8 +1,7 @@
 package com.bunshock.accounts.service;
 
-import com.bunshock.accounts.dto.account.AccountShowDTO;
-import com.bunshock.accounts.dto.account.AccountUpdateDTO;
 import com.bunshock.accounts.dto.customer.CustomerAccountDetailsDTO;
+import com.bunshock.accounts.dto.customer.CustomerAccountUpdateDTO;
 import com.bunshock.accounts.dto.customer.CustomerInputDTO;
 
 import java.util.List;
@@ -32,13 +31,13 @@ public interface IAccountService {
     CustomerAccountDetailsDTO fetchAccountDetails(String mobileNumber);
 
     /**
-     * Updates the account details for a customer with a given mobile number
+     * Updates the information and/or account details for a customer with a given mobile number
      *
      * @param mobileNumber the mobile number of the customer
-     * @param updatedAccount the updated account details
+     * @param updatedAccount the updated account/customer details
      * @return the updated account details
      */
-    AccountShowDTO updateAccount(String mobileNumber, AccountUpdateDTO updatedAccount);
+    CustomerAccountDetailsDTO updateAccount(String mobileNumber, CustomerAccountUpdateDTO updatedAccount);
 
     /**
      * Deletes the account for the given customer with the given mobile number.

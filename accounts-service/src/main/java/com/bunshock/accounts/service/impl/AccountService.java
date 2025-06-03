@@ -1,9 +1,8 @@
 package com.bunshock.accounts.service.impl;
 
 import com.bunshock.accounts.constants.AccountConstants;
-import com.bunshock.accounts.dto.account.AccountShowDTO;
-import com.bunshock.accounts.dto.account.AccountUpdateDTO;
 import com.bunshock.accounts.dto.customer.CustomerAccountDetailsDTO;
+import com.bunshock.accounts.dto.customer.CustomerAccountUpdateDTO;
 import com.bunshock.accounts.dto.customer.CustomerInputDTO;
 import com.bunshock.accounts.entity.Account;
 import com.bunshock.accounts.entity.Customer;
@@ -20,7 +19,6 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -111,16 +109,12 @@ public class AccountService implements IAccountService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Account", "customerId", customer.getCustomerId().toString()));
 
-        return CustomerAccountDetailsDTO.builder()
-                .name(customer.getName())
-                .email(customer.getEmail())
-                .mobileNumber(customer.getMobileNumber())
-                .account(AccountMapper.mapToAccountShowDTO(account))
-                .build();
+        return CustomerMapper.mapToCustomerAccountDetailsDTO(customer, account);
     }
 
     @Override
-    public AccountShowDTO updateAccount(String mobileNumber, AccountUpdateDTO updatedAccount) {
+    @Transactional
+    public CustomerAccountDetailsDTO updateAccount(String mobileNumber, CustomerAccountUpdateDTO updatedAccount) {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Customer", "mobileNumber", mobileNumber));
@@ -129,12 +123,32 @@ public class AccountService implements IAccountService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Account", "customerId", customer.getCustomerId().toString()));
 
-        if (updatedAccount.getAccountType() != null)
-            account.setAccountType(AccountType.valueOf(updatedAccount.getAccountType()));
-        if (updatedAccount.getBranchAddress() != null)
-            account.setBranchAddress(updatedAccount.getBranchAddress());
+        // Update and save customer details
+        if (updatedAccount.getName() != null)
+            customer.setName(updatedAccount.getName());
+        if (updatedAccount.getEmail() != null)
+            customer.setEmail(updatedAccount.getEmail());
+        if (updatedAccount.getMobileNumber() != null) {
+            customerRepository.findByMobileNumber(updatedAccount.getMobileNumber())
+                    .ifPresent(existingCustomer -> {
+                        throw new CustomerAlreadyExistsException("Customer with mobile" +
+                                " number '" + updatedAccount.getMobileNumber() + "' already exists");
+                    } );
+            customer.setMobileNumber(updatedAccount.getMobileNumber());
+        }
+        Customer savedCustomer = customerRepository.save(customer);
 
-        return AccountMapper.mapToAccountShowDTO(accountRepository.save(account));
+        // Update and save account details (if account details are provided)
+        if (updatedAccount.getAccount() == null)
+            return CustomerMapper.mapToCustomerAccountDetailsDTO(savedCustomer, account);
+
+        if (updatedAccount.getAccount().getAccountType() != null)
+            account.setAccountType(AccountType.valueOf(updatedAccount.getAccount().getAccountType()));
+        if (updatedAccount.getAccount().getBranchAddress() != null)
+            account.setBranchAddress(updatedAccount.getAccount().getBranchAddress());
+
+        return CustomerMapper.mapToCustomerAccountDetailsDTO(savedCustomer,
+                accountRepository.save(account));
     }
 
     @Override

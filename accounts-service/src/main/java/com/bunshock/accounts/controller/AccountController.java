@@ -1,9 +1,8 @@
 package com.bunshock.accounts.controller;
 
 import com.bunshock.accounts.constants.AccountConstants;
-import com.bunshock.accounts.dto.account.AccountShowDTO;
-import com.bunshock.accounts.dto.account.AccountUpdateDTO;
 import com.bunshock.accounts.dto.customer.CustomerAccountDetailsDTO;
+import com.bunshock.accounts.dto.customer.CustomerAccountUpdateDTO;
 import com.bunshock.accounts.dto.customer.CustomerInputDTO;
 import com.bunshock.accounts.dto.ResponseDTO;
 import com.bunshock.accounts.dto.ResponseSuccessDTO;
@@ -78,9 +77,9 @@ public class AccountController {
             @Pattern(regexp = "^\\+?\\d{1,4}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]" +
                     "?\\d{1,4}[-.\\s]?\\d{1,9}$", message = "Invalid mobile number format")
             @PathVariable String mobileNumber,
-            @Valid @RequestBody AccountUpdateDTO updatedAccount
+            @Valid @RequestBody CustomerAccountUpdateDTO updatedAccount
     ) {
-        return new ResponseEntity<>(ResponseSuccessDTO.<AccountShowDTO>builder()
+        return new ResponseEntity<>(ResponseSuccessDTO.<CustomerAccountDetailsDTO>builder()
                 .statusCode(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
                 .message(String.format(AccountConstants.MESSAGE_200, "Updated account details " +
