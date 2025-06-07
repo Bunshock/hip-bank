@@ -20,7 +20,7 @@ public class ResponseErrorDTO extends ResponseDTO {
     // Request URI
     @Schema(
             description = "API path where the error occurred",
-            example = "uri=/api/accounts/create"
+            example = "uri=/api/loans/create"
     )
     private String apiPath;
 
@@ -28,15 +28,15 @@ public class ResponseErrorDTO extends ResponseDTO {
     // For single message error (like common exceptions)
     @Schema(
             description = "Error message (single-error case)",
-            example = "Customer with mobile number '+254712345678' already exists"
+            example = "fetchLoan.loanNumber: Loan number must be exactly 10 digits"
     )
     private String errorMessage;
 
     // For catching multiple error messages (like validation errors)
     @Schema(
             description = "Map of error messages (multiple-error case)",
-            example = "{\"name\":\"Name must be between 3 and 50 characters\"" +
-                    ", \"email\":\"Invalid email address format\"}"
+            example = "{\"loanType\":\"Invalid loan type\"," +
+                    "\"mobileNumber\":\"Invalid mobile number format\"}"
     )
     private Map<String, String> errors;
 
