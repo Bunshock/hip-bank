@@ -28,15 +28,14 @@ public class ResponseErrorDTO extends ResponseDTO {
     // For single message error (like common exceptions)
     @Schema(
             description = "Error message (single-error case)",
-            example = "Customer with mobile number '+254712345678' already exists"
+            example = "updateCard.cardNumber: Card number must be exactly 10 digits"
     )
     private String errorMessage;
 
     // For catching multiple error messages (like validation errors)
     @Schema(
             description = "Map of error messages (multiple-error case)",
-            example = "{\"name\":\"Name must be between 3 and 50 characters\"" +
-                    ", \"email\":\"Invalid email address format\"}"
+            example = "{\"cardType\":\"Invalid card type\",\"cardLimit\":\"must be greater than 0\"}"
     )
     private Map<String, String> errors;
 

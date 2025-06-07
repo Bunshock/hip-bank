@@ -8,7 +8,7 @@ public class CardTypeValidator implements ConstraintValidator<ValidCardType, Str
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null) return false;
+        if (value == null) return true;
         try {
             CardType.valueOf(value.toUpperCase());
             return true;
