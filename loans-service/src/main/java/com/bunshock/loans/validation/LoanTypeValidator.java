@@ -8,7 +8,7 @@ public class LoanTypeValidator implements ConstraintValidator<ValidLoanType, Str
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null) return false;
+        if (value == null) return true;
         try {
             LoanType.valueOf(value.toUpperCase());
             return true;
