@@ -17,7 +17,7 @@ public class ResponseSuccessDTO<T> extends ResponseDTO {
 
     @Schema(
             description = "Message of the response",
-            example = "Account created successfully"
+            example = "Loan created successfully"
     )
     private String message;
 
