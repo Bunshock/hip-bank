@@ -1,5 +1,0 @@
-build:
-  version: "1.0.0-prod"
-
-accounts:
-  message: "Welcome to HipBank accounts microservice (production)"

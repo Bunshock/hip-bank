@@ -1,5 +1,0 @@
-build:
-  version: "1.0.0-qa"
-
-accounts:
-  message: "Welcome to HipBank cards microservice (QA)"
