@@ -1,4 +1,6 @@
 server:
+  application:
+    name: "accounts"
   port: 8080
 spring:
   datasource:
@@ -14,3 +16,5 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  config:
+    import: "optional:configserver:http://localhost:8071"
