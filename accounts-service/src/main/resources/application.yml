@@ -1,8 +1,8 @@
 server:
-  application:
-    name: "accounts"
   port: 8080
 spring:
+  application:
+    name: "accounts"
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
