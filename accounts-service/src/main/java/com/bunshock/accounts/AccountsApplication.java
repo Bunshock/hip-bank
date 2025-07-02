@@ -1,6 +1,6 @@
 package com.bunshock.accounts;
 
-import com.bunshock.accounts.dto.AccountsContactInfoDTO;
+import com.bunshock.accounts.config.AccountsProperties;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
-@EnableConfigurationProperties(AccountsContactInfoDTO.class)
+@EnableConfigurationProperties(AccountsProperties.class)
 @OpenAPIDefinition(
 		info = @Info(
 				title = "Hip Bank: Accounts microservice",

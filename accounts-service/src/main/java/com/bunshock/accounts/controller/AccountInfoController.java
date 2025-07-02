@@ -1,5 +1,6 @@
 package com.bunshock.accounts.controller;
 
+import com.bunshock.accounts.config.AccountsProperties;
 import com.bunshock.accounts.dto.AccountsContactInfoDTO;
 import com.bunshock.accounts.dto.ResponseErrorDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,13 +30,13 @@ public class AccountInfoController {
 
     private final String buildVersion;
     private final Environment environment;
-    private final AccountsContactInfoDTO accountsContactInfo;
+    private final AccountsProperties accountsContactInfo;
 
     @Autowired
     public AccountInfoController(
             @Value("${build.version:unknown}") String buildVersion,
             Environment environment,
-            AccountsContactInfoDTO accountsContactInfo) {
+            AccountsProperties accountsContactInfo) {
         this.buildVersion = buildVersion;
         this.environment = environment;
         this.accountsContactInfo = accountsContactInfo;
@@ -149,7 +150,11 @@ public class AccountInfoController {
     })
     @GetMapping("/contact-info")
     public ResponseEntity<AccountsContactInfoDTO> getContactInfo() {
-        return new ResponseEntity<>(accountsContactInfo, HttpStatus.OK);
+        return new ResponseEntity<>(AccountsContactInfoDTO.builder()
+                .message(accountsContactInfo.getMessage())
+                .contactDetails(accountsContactInfo.getContactDetails())
+                .onCallSupport(accountsContactInfo.getOnCallSupport())
+                .build(), HttpStatus.OK);
     }
 
 }

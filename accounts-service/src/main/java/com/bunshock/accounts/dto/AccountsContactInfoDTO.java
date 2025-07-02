@@ -1,17 +1,21 @@
 package com.bunshock.accounts.dto;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
 
-@ConfigurationProperties(value = "accounts")
-public record AccountsContactInfoDTO(String message, Map<String, String> contactDetails, List<String> onCallSupport) {
+@NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
+@Builder
+public class AccountsContactInfoDTO {
 
-    public AccountsContactInfoDTO(String message, Map<String, String> contactDetails, List<String> onCallSupport) {
-        this.message = (message == null) ? "Welcome to HipBank accounts microservice (config server down! Information unavailable)" : message;
-        this.contactDetails = (contactDetails == null) ? Map.of("name", "unknown", "email", "unknown") : contactDetails;
-        this.onCallSupport = (onCallSupport == null) ? List.of("unknown") : onCallSupport;
-    }
+    private String message;
+    private Map<String, String> contactDetails;
+    private List<String> onCallSupport;
 
 }
