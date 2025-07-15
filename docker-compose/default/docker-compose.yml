@@ -16,6 +16,28 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
+  configserver:
+    image: "bunshock/configserver:v1"
+    container_name: "hipbank-configserver_ms"
+    ports:
+      - "8071:8071"
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8071/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    environment:
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_USERNAME=${GIT_USERNAME}
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_PASSWORD=${GIT_PASSWORD}
+      - ENCRYPT_KEY=${ENCRYPT_KEY}
+    extends:
+      file: common-config.yml
+      service: base-config
+
   accounts-service:
     image: "bunshock/accounts:v1"
     container_name: "hipbank-accounts_ms"
@@ -28,7 +50,7 @@ services:
       SPRING_APPLICATION_NAME: "accounts"
     extends:
       file: common-config.yml
-      service: microservice-configserver-profile-config
+      service: microservice-config
 
   loans-service:
     image: "bunshock/loans:v1"
@@ -42,7 +64,7 @@ services:
       SPRING_APPLICATION_NAME: "loans"
     extends:
       file: common-config.yml
-      service: microservice-configserver-profile-config
+      service: microservice-config
 
   cards-service:
     image: "bunshock/cards:v1"
@@ -56,22 +78,7 @@ services:
       SPRING_APPLICATION_NAME: "cards"
     extends:
       file: common-config.yml
-      service: microservice-configserver-profile-config
-
-  configserver:
-    image: "bunshock/configserver:v1"
-    container_name: "hipbank-configserver_ms"
-    ports:
-      - "8071:8071"
-    healthcheck:
-      test: "curl --fail --silent http://localhost:8071/actuator/health/readiness | grep UP || exit 1"
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
-    extends:
-      file: common-config.yml
-      service: microservice-base-config
+      service: microservice-config
 
 networks:
   hipbank-network:
